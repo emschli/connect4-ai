@@ -115,3 +115,6 @@ class Board:
             index = index+1
 
         return True if count == 4 else False
+
+    def isColumnFull(self, columnIndex):
+        return self.fields[:, columnIndex][0] is not None

@@ -6,11 +6,14 @@ DRAW = 'DRAW'
 
 WIN = 'WIN'
 
+ROWS = 6
+COLUMNS = 7
+
 
 class Board:
     starting_player_symbol = True
 
-    def __init__(self, rows, columns):
+    def __init__(self, rows=ROWS, columns=COLUMNS):
         self.fields = np.array([[None] * columns for _ in range(rows)])
         self.rows = rows
         self.columns = columns

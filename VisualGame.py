@@ -2,7 +2,7 @@ import pygame
 from Board import Board, ONGOING
 
 SIZE_OF_FIELD = 50
-DIAMETER = SIZE_OF_FIELD - 10
+DIAMETER = SIZE_OF_FIELD - 30
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -15,7 +15,7 @@ class VisualGame:
         pygame.init()
         self.displayHeight = board.rows * SIZE_OF_FIELD
         self.displayWidth = board.columns * SIZE_OF_FIELD
-        self.display = pygame.display.set_mode(self.displayWidth, self.displayHeight)
+        self.display = pygame.display.set_mode((self.displayWidth, self.displayHeight))
         pygame.display.set_caption('Connect 4')
         self.startingPlayer = startingPlayer
         self.secondPlayer = secondPlayer
@@ -27,16 +27,23 @@ class VisualGame:
         self._drawBoard()
 
         while not gameFinished:
-            column = currentPlayer.getMove()
+            pygame.event.pump()
+            column = currentPlayer.getMove(self.board)
             resultOfMove = self.board.playPiece(column)
             self._drawBoard()
             currentPlayer = self._getNextPlayer(currentPlayer)
             gameFinished = self._isGameFinished(resultOfMove)
 
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    break
+
     def _drawBoard(self):
         self.display.fill(WHITE)
-        for i in self.board.rows:
-            for j in self.board.columns:
+        for i in range(self.board.rows):
+            for j in range(self.board.columns):
                 field = self.board.fields[i, j]
                 if field is not None:
                     x = j * SIZE_OF_FIELD + 0.5 * SIZE_OF_FIELD
@@ -46,6 +53,7 @@ class VisualGame:
                         pygame.draw.circle(self.display, RED, (x, y), DIAMETER)
                     else:
                         pygame.draw.circle(self.display, YELLOW, (x, y), DIAMETER)
+        pygame.display.update()
 
     def _getNextPlayer(self, currentPlayer):
         if currentPlayer == self.startingPlayer:

@@ -3,6 +3,7 @@
 class HumanPlayer:
     def __init__(self):
         self.chosenColumn = None
+        self.type = 'human'
 
     def getMove(self, board, finish_event):
         while True:

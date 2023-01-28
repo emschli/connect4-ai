@@ -21,35 +21,71 @@ class VisualGame:
         self.startingPlayer = startingPlayer
         self.secondPlayer = secondPlayer
         self.board = board
+        self.font_style = pygame.font.SysFont("bahnschrift", 25)
 
     def play(self):
         gameFinished = False
         currentPlayer = self.startingPlayer
         self._drawBoard()
 
-        while not gameFinished:
-            finish_event = self._startGetMoveThread(currentPlayer)
-            while not finish_event.is_set():
-                for event in pygame.event.get():
-                    pass
-            column = currentPlayer.chosenColumn
-            resultOfMove = self.board.playPiece(column)
-            self._drawBoard()
-            currentPlayer = self._getNextPlayer(currentPlayer)
-            gameFinished = self._isGameFinished(resultOfMove)
+        class Quit(Exception):
+            pass
 
+        status = None
         try:
+            while not gameFinished:
+                finish_event = self._startGetMoveThread(currentPlayer)
+
+                while not finish_event.is_set():
+                    for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                            raise Quit
+
+                column = currentPlayer.chosenColumn
+                resultOfMove = self.board.playPiece(column)
+                status = resultOfMove[0]
+                self._drawBoard()
+                currentPlayer = self._getNextPlayer(currentPlayer)
+                gameFinished = self._isGameFinished(resultOfMove)
+
+            self._printGameFinishedMessage(currentPlayer, status)
+
             while True:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        pygame.quit()
-                        break
-        except pygame.error:
-            print('Done!')
+                        raise Quit
+        except Quit:
+            try:
+                pygame.quit()
+            except pygame.error:
+                print('Quit!')
+            finally:
+                exit()
+
+    def _printGameFinishedMessage(self, currentPlayer, status):
+        if status == 'DRAW':
+            message = 'DRAW!'
+        else:
+            lastMovedPlayer = self._getNextPlayer(currentPlayer)
+            if lastMovedPlayer == self.startingPlayer:
+                color = 'Red'
+            else:
+                color = 'Yellow'
+            message = color + ' wins!'
+
+        print_message = self.font_style.render(message, True, BLACK)
+        self.display.blit(print_message, [self.displayWidth / 2, self.displayHeight / 2])
+        pygame.display.update()
 
     def _startGetMoveThread(self, currentPlayer):
         finish_event = threading.Event()
-        thread = threading.Thread(target=currentPlayer.getMove, args=(self.board, finish_event))
+
+        if currentPlayer.type == 'human':
+            args = (self.board, finish_event)
+        else:
+            args = ()
+
+        thread = threading.Thread(target=currentPlayer.getMove, args=args)
         thread.start()
         return finish_event
 

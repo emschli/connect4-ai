@@ -1,4 +1,5 @@
 import pygame
+import threading
 from Board import Board, ONGOING
 
 SIZE_OF_FIELD = 50
@@ -27,18 +28,31 @@ class VisualGame:
         self._drawBoard()
 
         while not gameFinished:
-            pygame.event.pump()
-            column = currentPlayer.getMove(self.board)
+            finish_event = self._startGetMoveThread(currentPlayer)
+            while not finish_event.is_set():
+                for event in pygame.event.get():
+                    pass
+            column = currentPlayer.chosenColumn
             resultOfMove = self.board.playPiece(column)
             self._drawBoard()
             currentPlayer = self._getNextPlayer(currentPlayer)
             gameFinished = self._isGameFinished(resultOfMove)
 
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    break
+        try:
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        break
+        except pygame.error:
+            print('Done!')
+
+    def _startGetMoveThread(self, currentPlayer):
+        finish_event = threading.Event()
+        thread = threading.Thread(target=currentPlayer.getMove, args=(self.board, finish_event))
+        thread.start()
+        return finish_event
+
 
     def _drawBoard(self):
         self.display.fill(WHITE)

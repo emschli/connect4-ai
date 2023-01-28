@@ -1,8 +1,16 @@
 
 
 class HumanPlayer:
-    def getMove(self, board):
+    def __init__(self):
+        self.chosenColumn = None
+
+    def getMove(self, board, finish_event):
         while True:
-            chosenColumn = int(input('Choose Number of Column: \n'))
-            if chosenColumn >= 0 and chosenColumn <= board.columns:
-                return chosenColumn
+            try:
+                player_input = int(input('Choose Number of Column: \n'))
+                if 0 <= player_input <= board.columns:
+                    self.chosenColumn = player_input
+                    break
+            except Exception as e:
+                pass
+        finish_event.set()

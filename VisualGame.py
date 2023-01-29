@@ -11,6 +11,10 @@ RED = (213, 50, 80)
 YELLOW = (255, 255, 102)
 
 
+class Quit(Exception):
+    pass
+
+
 class VisualGame:
     def __init__(self, startingPlayer, secondPlayer, board=Board()):
         pygame.init()
@@ -22,29 +26,33 @@ class VisualGame:
         self.secondPlayer = secondPlayer
         self.board = board
         self.font_style = pygame.font.SysFont("bahnschrift", 25)
+        self.kiThread = None
+        self.columnBorders = self._initColumnBorders(board.columns)
+
+    def _initColumnBorders(self, columns):
+        borders = []
+        for i in range(columns):
+            borders.append(i*SIZE_OF_FIELD)
+        return borders
 
     def play(self):
         gameFinished = False
         currentPlayer = self.startingPlayer
         self._drawBoard()
-
-        class Quit(Exception):
-            pass
+        pygame.display.flip()
 
         status = None
         try:
             while not gameFinished:
-                finish_event = self._startGetMoveThread(currentPlayer)
+                if currentPlayer.type == 'human':
+                    column = self._makeHumanMove()
+                else:
+                    column = self._makeKiMove(currentPlayer)
 
-                while not finish_event.is_set():
-                    for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                            raise Quit
-
-                column = currentPlayer.chosenColumn
                 resultOfMove = self.board.playPiece(column)
                 status = resultOfMove[0]
                 self._drawBoard()
+                pygame.display.flip()
                 currentPlayer = self._getNextPlayer(currentPlayer)
                 gameFinished = self._isGameFinished(resultOfMove)
 
@@ -60,7 +68,50 @@ class VisualGame:
             except pygame.error:
                 print('Quit!')
             finally:
+                if self.kiThread is not None:
+                    self.kiThread.terminate()
                 exit()
+
+    def _makeHumanMove(self):
+        while True:
+            self._drawBoard()
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            column = self._getColumnForMousePosition(mouse_x)
+            rect = self._createRectangleFrame(column)
+            pygame.draw.rect(self.display, BLACK, rect, 4)
+            pygame.display.flip()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    raise Quit
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    return column
+
+    def _createRectangleFrame(self, column):
+        rect_x_pos = self.columnBorders[column]
+        rect_y_pos = 0
+        rect_width = SIZE_OF_FIELD
+        rect_height = SIZE_OF_FIELD * self.displayHeight
+        return pygame.Rect(rect_x_pos, rect_y_pos, rect_width, rect_height)
+
+    def _getColumnForMousePosition(self, mouse_x):
+        indices = [i for i in range(self.board.columns)]
+        indices.reverse()
+
+        for columnIndex in indices:
+            if mouse_x >= self.columnBorders[columnIndex]:
+                return columnIndex
+
+    def _makeKiMove(self, currentPlayer):
+        finish_event = threading.Event()
+        self.kiThread = threading.Thread(target=currentPlayer.getMove, args=(self.board, finish_event))
+        self.kiThread.start()
+
+        while not finish_event.is_set():
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    raise Quit
+        return  currentPlayer.chosenColumn
 
     def _printGameFinishedMessage(self, currentPlayer, status):
         if status == 'DRAW':
@@ -77,19 +128,6 @@ class VisualGame:
         self.display.blit(print_message, [self.displayWidth / 2, self.displayHeight / 2])
         pygame.display.update()
 
-    def _startGetMoveThread(self, currentPlayer):
-        finish_event = threading.Event()
-
-        if currentPlayer.type == 'human':
-            args = (self.board, finish_event)
-        else:
-            args = ()
-
-        thread = threading.Thread(target=currentPlayer.getMove, args=args)
-        thread.start()
-        return finish_event
-
-
     def _drawBoard(self):
         self.display.fill(WHITE)
         for i in range(self.board.rows):
@@ -103,7 +141,6 @@ class VisualGame:
                         pygame.draw.circle(self.display, RED, (x, y), DIAMETER)
                     else:
                         pygame.draw.circle(self.display, YELLOW, (x, y), DIAMETER)
-        pygame.display.update()
 
     def _getNextPlayer(self, currentPlayer):
         if currentPlayer == self.startingPlayer:

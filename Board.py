@@ -121,3 +121,12 @@ class Board:
 
     def isColumnFull(self, columnIndex):
         return self.fields[:, columnIndex][0] is not None
+
+    @staticmethod
+    def createBoardFromString(string):
+        board = Board()
+        for c in string:
+            column = int(c)
+            board.playPiece(column-1)
+
+        return board

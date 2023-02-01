@@ -56,7 +56,7 @@ class VisualGame:
                 currentPlayer = self._getNextPlayer(currentPlayer)
                 gameFinished = self._isGameFinished(resultOfMove)
 
-            self._printGameFinishedMessage(currentPlayer, status)
+            self._printGameFinishedMessage(status)
 
             while True:
                 for event in pygame.event.get():
@@ -113,12 +113,11 @@ class VisualGame:
                     raise Quit
         return  currentPlayer.chosenColumn
 
-    def _printGameFinishedMessage(self, currentPlayer, status):
+    def _printGameFinishedMessage(self, status):
         if status == 'DRAW':
             message = 'DRAW!'
         else:
-            lastMovedPlayer = self._getNextPlayer(currentPlayer)
-            if lastMovedPlayer == self.startingPlayer:
+            if self.board.numberOfPiecesPlayed % 2 != 0:
                 color = 'Red'
             else:
                 color = 'Yellow'

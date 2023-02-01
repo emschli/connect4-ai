@@ -67,7 +67,8 @@ class Board:
             main_diagonal_upper_part.append(self.fields[i, j])
             i = i-1
             j = j-1
-        main_diagonal.append(main_diagonal_upper_part.reverse())
+        main_diagonal_upper_part.reverse()
+        main_diagonal.extend(main_diagonal_upper_part)
         main_diagonal.append(self.fields[rowIndex, columnIndex])
 
         i = rowIndex+1
@@ -85,8 +86,8 @@ class Board:
             second_diagonal_lower_part.append(self.fields[i, j])
             i = i+1
             j = j-1
-
-        second_diagonal.append(second_diagonal_lower_part.reverse())
+        second_diagonal_lower_part.reverse()
+        second_diagonal.extend(second_diagonal_lower_part)
         second_diagonal.append(self.fields[rowIndex, columnIndex])
 
         i = rowIndex-1

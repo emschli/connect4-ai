@@ -8,19 +8,18 @@ class KiPlayer:
         self.type = 'ki'
 
     def getMove(self, board, finish_event):
-        isMaximizingPlayer = board.numberOfPiecesPlayed % 2 == 0
-        best_score = -infinity if isMaximizingPlayer else infinity
+        best_score = -infinity
 
         for i in range(board.columns):
-            if not board.isColumnFull(i):
+            if not board.columnIsFull(i):
                 column_index, row_index = board.insertPiece(i)
 
-                score = minimax(board, column_index, row_index, isMaximizingPlayer)
+                score = minimax(board)
 
                 board.fields[row_index][column_index] = None
                 board.numberOfPiecesPlayed = board.numberOfPiecesPlayed - 1
 
-                if (isMaximizingPlayer and score > best_score) or (not isMaximizingPlayer and score < best_score):
+                if score > best_score:
                     self.chosenColumn = column_index
                     best_score = score
 

@@ -41,12 +41,12 @@ class Board:
 
         if self.isWin(columnIndex, row_index):
             return WIN, row_index, columnIndex
-        elif self.isBoardFull():
+        elif self.isFull():
             return DRAW, row_index, columnIndex
         else:
             return ONGOING, row_index, columnIndex
 
-    def isBoardFull(self):
+    def isFull(self):
         return self.numberOfPiecesPlayed == self.rows * self.columns
 
     def isWin(self, columnIndex, rowIndex):
@@ -62,6 +62,13 @@ class Board:
                 return True
 
         return False
+
+    def wouldBeWin(self, column):
+        column_index, row_index = self.insertPiece(column)
+        win = self.isWin(column_index, row_index)
+        self.fields[row_index][column_index] = None
+        self.numberOfPiecesPlayed = self.numberOfPiecesPlayed - 1
+        return win
 
     def _getDiagonals(self, columnIndex, rowIndex):
         main_diagonal = []
@@ -127,7 +134,7 @@ class Board:
 
         return True if count == 4 else False
 
-    def isColumnFull(self, columnIndex):
+    def columnIsFull(self, columnIndex):
         return self.fields[:, columnIndex][0] is not None
 
     @staticmethod

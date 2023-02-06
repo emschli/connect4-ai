@@ -1,28 +1,29 @@
 from math import inf as infinity
 
 
-def getScore(board, isMaximizingPlayer):
-    score = int((board.rows * board.columns + 2 - board.numberOfPiecesPlayed) / 2)
-    return score if isMaximizingPlayer else -score
+def getScore(board):
+    return int((board.rows * board.columns - board.numberOfPiecesPlayed + 1) / 2)
 
 
-def minimax(board, lastMoveColumn, lastMoveRow, isMaximizingPlayer):
-    if board.isWin(lastMoveColumn, lastMoveRow):
-        return getScore(board, isMaximizingPlayer)
-    elif board.isBoardFull():
+def minimax(board):
+    if board.isFull():
         return 0
-    else:
-        best_score = -infinity if isMaximizingPlayer else infinity
 
-        for i in range(board.columns):
-            if not board.isColumnFull(i):
-                column_index, row_index = board.insertPiece(i)
+    for i in range(board.columns):
+        if not board.columnIsFull(i) and board.wouldBeWin(i):
+            return getScore(board)
 
-                score = minimax(board, column_index, row_index, not isMaximizingPlayer)
+    best_score = -infinity
 
-                board.fields[row_index][column_index] = None
-                board.numberOfPiecesPlayed = board.numberOfPiecesPlayed - 1
+    for i in range(board.columns):
+        if not board.columnIsFull(i):
+            column_index, row_index = board.insertPiece(i)
 
-                best_score = max(score, best_score) if isMaximizingPlayer else min(score, best_score)
+            score = -minimax(board)
 
-        return best_score
+            board.fields[row_index][column_index] = None
+            board.numberOfPiecesPlayed = board.numberOfPiecesPlayed - 1
+
+            best_score = max(score, best_score)
+
+    return best_score

@@ -19,6 +19,6 @@ def readFile(fileName):
         while line != '':
             splitted_line = line.split()
             board = Board.createBoardFromString(splitted_line[0])
-            result.append((board, splitted_line[1]))
+            result.append((board, int(splitted_line[1])))
             line = reader.readline()
     return result

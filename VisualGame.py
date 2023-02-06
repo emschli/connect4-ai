@@ -49,7 +49,7 @@ class VisualGame:
                 else:
                     column = self._makeKiMove(currentPlayer)
 
-                resultOfMove = self.board.playPiece(column)
+                resultOfMove = self.board.insertPieceWithWinCalc(column)
                 status = resultOfMove[0]
                 self._drawBoard()
                 pygame.display.flip()
@@ -111,7 +111,7 @@ class VisualGame:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     raise Quit
-        return  currentPlayer.chosenColumn
+        return currentPlayer.chosenColumn
 
     def _printGameFinishedMessage(self, status):
         if status == 'DRAW':

@@ -19,30 +19,37 @@ class Board:
         self.columns = columns
         self.numberOfPiecesPlayed = 0
 
-    def playPiece(self, columnIndex):
-        if self.numberOfPiecesPlayed % 2 == 0:
-            return self._insertPiece(columnIndex, self.starting_player_symbol)
-        else:
-            return self._insertPiece(columnIndex, not self.starting_player_symbol)
-
-    def _insertPiece(self, columnIndex, symbol):
+    def insertPiece(self, columnIndex):
         column = self.fields[:, columnIndex]
         assert column[0] is None, "Column must not be Full"
 
         res = list(filter(lambda f: f is None, column))
         row_index = len(res) - 1
 
+        if self.numberOfPiecesPlayed % 2 == 0:
+            symbol = self.starting_player_symbol
+        else:
+            symbol = not self.starting_player_symbol
+
         self.fields[row_index, columnIndex] = symbol
         self.numberOfPiecesPlayed = self.numberOfPiecesPlayed + 1
 
-        if self._isWin(columnIndex, row_index):
+        return columnIndex, row_index
+
+    def insertPieceWithWinCalc(self, columnIndex):
+        row_index = self.insertPiece(columnIndex)[1]
+
+        if self.isWin(columnIndex, row_index):
             return WIN, row_index, columnIndex
-        elif self.numberOfPiecesPlayed == self.rows * self.columns:
+        elif self.isBoardFull():
             return DRAW, row_index, columnIndex
         else:
             return ONGOING, row_index, columnIndex
 
-    def _isWin(self, columnIndex, rowIndex):
+    def isBoardFull(self):
+        return self.numberOfPiecesPlayed == self.rows * self.columns
+
+    def isWin(self, columnIndex, rowIndex):
         lines = []
         lines.append(self.fields[:, columnIndex])
         lines.append(self.fields[rowIndex])
@@ -128,6 +135,6 @@ class Board:
         board = Board()
         for c in string:
             column = int(c)
-            board.playPiece(column-1)
+            board.insertPiece(column-1)
 
         return board

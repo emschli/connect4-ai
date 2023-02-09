@@ -2,6 +2,8 @@ from math import inf as infinity
 
 
 class Negamax:
+    version = '_v1'
+
     def __init__(self):
         self.positionCount = 0
 

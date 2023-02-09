@@ -1,9 +1,11 @@
 from importTestBoards import readFile, END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGIN_HARD
 from MeasurementProcess import MeasurementProcess
 import time
+from negamax import Negamax
 
 fileNames = END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGIN_HARD
-version = '_v1'
+version = Negamax.version
+#TODO: auf sinnvolle Zeit festlegen
 seconds_to_sleep = 60
 
 for i in range(6):

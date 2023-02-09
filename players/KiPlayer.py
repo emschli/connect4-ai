@@ -1,11 +1,12 @@
 from math import inf as infinity
-from minimax import minimax
+from negamax import Negamax
 
 
 class KiPlayer:
     def __init__(self):
         self.chosenColumn = None
         self.type = 'ki'
+        self.n = Negamax()
 
     def getMove(self, board, finish_event):
         best_score = -infinity
@@ -14,7 +15,7 @@ class KiPlayer:
             if not board.columnIsFull(i):
                 column_index, row_index = board.insertPiece(i)
 
-                score = minimax(board)
+                score = self.n.negamax(board)
 
                 board.fields[row_index][column_index] = None
                 board.numberOfPiecesPlayed = board.numberOfPiecesPlayed - 1

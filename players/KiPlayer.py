@@ -15,7 +15,7 @@ class KiPlayer:
             if not board.columnIsFull(i):
                 column_index, row_index = board.insertPiece(i)
 
-                score = self.n.negamax(board)
+                score = self.n.solve(board)
 
                 board.fields[row_index][column_index] = None
                 board.numberOfPiecesPlayed = board.numberOfPiecesPlayed - 1

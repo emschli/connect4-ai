@@ -1,10 +1,10 @@
 from importTestBoards import readFile, END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGIN_HARD
 from MeasurementProcess import MeasurementProcess
 import time
-from negamax import Negamax
+from config import solver
 
 fileNames = END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGIN_HARD
-version = Negamax.version
+version = solver.version
 #TODO: auf sinnvolle Zeit festlegen
 seconds_to_sleep = 60
 

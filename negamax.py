@@ -11,7 +11,7 @@ class Negamax:
         return int((board.rows * board.columns - board.numberOfPiecesPlayed + 1) / 2)
 
     def _negamax(self, board):
-        self.positionCount = self.positionCount + 1
+        self.positionCount += 1
         if board.isFull():
             return 0
 
@@ -34,6 +34,6 @@ class Negamax:
 
         return best_score
 
-    def negamax(self, board):
+    def solve(self, board):
         self.positionCount = 0
         return self._negamax(board)

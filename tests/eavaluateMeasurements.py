@@ -10,7 +10,7 @@ namesInTable = [
     "Anfang mittelschwer",
     "Anfang schwer"
 ]
-version = '_v1'
+version = '_v2'
 base_path = os.getcwd() + '/measurements/'
 base_path_evaluations = base_path + 'evaluations/'
 full_evaluation_path = base_path_evaluations + 'eval' + version

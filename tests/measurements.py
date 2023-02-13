@@ -1,12 +1,10 @@
 from importTestBoards import readFile, END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGIN_HARD
 from MeasurementProcess import MeasurementProcess
-import time
 from config import solver
 
 fileNames = END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGIN_HARD
 version = solver.version
-#TODO: auf sinnvolle Zeit festlegen
-seconds_to_sleep = 60
+seconds_to_sleep = 60 * 5
 
 for i in range(6):
     fileName = fileNames[i]
@@ -16,7 +14,7 @@ for i in range(6):
     process = MeasurementProcess(test_boards, fileName+version)
 
     process.start()
-    time.sleep(seconds_to_sleep)
+    process.join(seconds_to_sleep)
 
     if process.is_alive():
         process.kill()

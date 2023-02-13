@@ -1,8 +1,10 @@
 from math import inf as infinity
+from Board import Board
 
 
 class Negamax:
     version = '_v1'
+    default_board = Board
 
     def __init__(self):
         self.positionCount = 0
@@ -37,3 +39,22 @@ class Negamax:
     def solve(self, board):
         self.positionCount = 0
         return self._negamax(board)
+
+    def getBestMove(self, board):
+        best_score = -infinity
+        chosen_column = None
+
+        for i in range(board.columns):
+            if not board.columnIsFull(i):
+                column_index, row_index = board.insertPiece(i)
+
+                score = -self.solve(board)
+
+                board.fields[row_index][column_index] = None
+                board.numberOfPiecesPlayed = board.numberOfPiecesPlayed - 1
+
+                if score > best_score:
+                    chosen_column = column_index
+                    best_score = score
+
+        return chosen_column

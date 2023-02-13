@@ -1,6 +1,6 @@
 import pygame
 import threading
-from Board import Board, ONGOING
+from Board import ONGOING
 
 SIZE_OF_FIELD = 50
 DIAMETER = SIZE_OF_FIELD - 30
@@ -16,7 +16,7 @@ class Quit(Exception):
 
 
 class VisualGame:
-    def __init__(self, startingPlayer, secondPlayer, board=Board()):
+    def __init__(self, startingPlayer, secondPlayer, board):
         pygame.init()
         self.displayHeight = board.rows * SIZE_OF_FIELD
         self.displayWidth = board.columns * SIZE_OF_FIELD
@@ -68,7 +68,7 @@ class VisualGame:
             except pygame.error:
                 print('Quit!')
             finally:
-                if self.kiThread is not None:
+                if self.kiThread is not None and self.kiThread.is_alive():
                     self.kiThread.terminate()
                 exit()
 

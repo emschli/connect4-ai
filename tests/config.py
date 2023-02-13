@@ -1,7 +1,4 @@
-from minimax import Minimax
-from negamax import Negamax
-from negamax_alpha_beta import NegamaxAlphaBeta
-from negamax_ab_move_ordering import NegamaxAlphaBetaMoveOrdering
+from solvers.negamax_alpha_beta_move_ordering import NegamaxAlphaBetaMoveOrdering
 
 # solver = Minimax()
 # solver = Negamax()

@@ -1,5 +1,5 @@
 import os
-from Board import Board
+from config import solver
 
 wd = os.getcwd()
 complete_path = wd + '/testStrings/'
@@ -18,7 +18,7 @@ def readFile(fileName):
         line = reader.readline()
         while line != '':
             splitted_line = line.split()
-            board = Board.createBoardFromString(splitted_line[0])
+            board = solver.default_board.createBoardFromString(splitted_line[0])
             result.append((board, int(splitted_line[1])))
             line = reader.readline()
     return result

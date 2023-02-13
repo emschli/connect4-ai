@@ -1,12 +1,13 @@
 from math import inf as infinity
+from Board import Board
 
 
-class NegamaxAlphaBetaMoveOrdering:
-    version = '_v3'
+class NegamaxAlphaBeta:
+    version = '_v2'
+    default_board = Board
 
     def __init__(self):
         self.positionCount = 0
-        self.explorationOrder = [3, 2, 4, 5, 1, 0, 6]
 
     def getScore(self, board):
         return int((board.rows * board.columns - board.numberOfPiecesPlayed + 1) / 2)
@@ -26,7 +27,7 @@ class NegamaxAlphaBetaMoveOrdering:
             if alpha >= beta:
                 return beta
 
-        for i in self.explorationOrder:
+        for i in range(board.columns):
             if not board.columnIsFull(i):
                 column_index, row_index = board.insertPiece(i)
 
@@ -45,3 +46,23 @@ class NegamaxAlphaBetaMoveOrdering:
     def solve(self, board):
         self.positionCount = 0
         return self._negamax(board, -infinity, infinity)
+
+    def getBestMove(self, board):
+        best_score = -infinity
+        chosen_column = None
+
+        for i in range(board.columns):
+            if not board.columnIsFull(i):
+                column_index, row_index = board.insertPiece(i)
+
+                score = -self.solve(board)
+
+                board.fields[row_index][column_index] = None
+                board.numberOfPiecesPlayed = board.numberOfPiecesPlayed - 1
+
+                if score > best_score:
+                    chosen_column = column_index
+                    best_score = score
+
+        return chosen_column
+

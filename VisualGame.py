@@ -50,13 +50,12 @@ class VisualGame:
                     column = self._makeKiMove(currentPlayer)
 
                 resultOfMove = self.board.insertPieceWithWinCalc(column)
-                status = resultOfMove[0]
                 self._drawBoard()
                 pygame.display.flip()
                 currentPlayer = self._getNextPlayer(currentPlayer)
                 gameFinished = self._isGameFinished(resultOfMove)
 
-            self._printGameFinishedMessage(status)
+            self._printGameFinishedMessage(resultOfMove)
 
             while True:
                 for event in pygame.event.get():
@@ -128,10 +127,11 @@ class VisualGame:
         pygame.display.update()
 
     def _drawBoard(self):
+        array_board = self.board.getArrayBoard()
         self.display.fill(WHITE)
         for i in range(self.board.rows):
             for j in range(self.board.columns):
-                field = self.board.fields[i, j]
+                field = array_board[i][j]
                 if field is not None:
                     x = j * SIZE_OF_FIELD + 0.5 * SIZE_OF_FIELD
                     y = i * SIZE_OF_FIELD + 0.5 * SIZE_OF_FIELD
@@ -148,7 +148,7 @@ class VisualGame:
             return self.startingPlayer
 
     def _isGameFinished(self, resultOfMove):
-        if resultOfMove[0] == ONGOING:
+        if resultOfMove == ONGOING:
             return False
         else:
             return True

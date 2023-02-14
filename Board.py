@@ -40,11 +40,11 @@ class Board:
         row_index = self.insertPiece(columnIndex)[1]
 
         if self.isWin(columnIndex, row_index):
-            return WIN, row_index, columnIndex
+            return WIN
         elif self.isFull():
-            return DRAW, row_index, columnIndex
+            return DRAW
         else:
-            return ONGOING, row_index, columnIndex
+            return ONGOING
 
     def isFull(self):
         return self.numberOfPiecesPlayed == self.rows * self.columns
@@ -136,6 +136,9 @@ class Board:
 
     def columnIsFull(self, columnIndex):
         return self.fields[:, columnIndex][0] is not None
+
+    def getArrayBoard(self):
+        return self.fields
 
     @staticmethod
     def createBoardFromString(string):

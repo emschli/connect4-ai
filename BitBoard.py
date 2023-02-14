@@ -1,7 +1,3 @@
-# TODO: Fürs VisualGame: insertPieceWithWinCalc(column)
-# TODO: static Method fürs einlesen eines testcases
-import numpy as np
-
 from Board import ONGOING, DRAW, WIN
 
 
@@ -88,4 +84,11 @@ class BitBoard:
         else:
             return ONGOING
 
+    @staticmethod
+    def createBoardFromString(string):
+        board = BitBoard()
+        for c in string:
+            column = int(c)
+            board.insertPiece(column - 1)
 
+        return board

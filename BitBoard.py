@@ -5,7 +5,7 @@ class BitBoard:
     def __init__(self):
         self.boards = [0, 0]
         self.height = [0, 7, 14, 21, 28, 35, 42]
-        self.moves = []
+        self.moves = [None] * 42
         self.rows = 6
         self.columns = 7
         self.numberOfPiecesPlayed = 0
@@ -17,7 +17,7 @@ class BitBoard:
 
         self.boards[self.numberOfPiecesPlayed & 1] ^= move
 
-        self.moves.append(columnIndex)
+        self.moves[self.numberOfPiecesPlayed] = columnIndex
         self.numberOfPiecesPlayed += 1
 
     def undoMove(self):

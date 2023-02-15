@@ -4,14 +4,15 @@ import os
 from eavaluateMeasurements import fileNames
 import statistics
 
-# measurement = 'duration'
-measurement = 'nodeCount'
+measurement = 'duration'
+# measurement = 'nodeCount'
 
 versions = [
     '_v0',
     '_v1',
     '_v2',
-    '_v3'
+    '_v3',
+    '_v4'
 ]
 
 results = {

@@ -1,10 +1,11 @@
 from Board import Board
+from BitBoard import BitBoard
 from players.HumanPlayer import HumanPlayer
 from VisualGame import VisualGame
 
-board_string = '2252576253462244111563365343671351441'
+board_string = '6763525635134453444361412671365712'
 
-board = Board.createBoardFromString(board_string)
+board = BitBoard.createBoardFromString(board_string)
 player1 = HumanPlayer()
 player2 = HumanPlayer()
 game = VisualGame(player1, player2, board)

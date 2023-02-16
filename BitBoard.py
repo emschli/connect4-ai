@@ -5,7 +5,7 @@ class BitBoard:
     def __init__(self):
         self.boards = [0, 0]
         self.height = [0, 7, 14, 21, 28, 35, 42]
-        self.moves = [None] * 42
+        self.moves = [-1] * 42
         self.rows = 6
         self.columns = 7
         self.numberOfPiecesPlayed = 0

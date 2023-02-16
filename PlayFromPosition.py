@@ -3,7 +3,7 @@ from BitBoard import BitBoard
 from players.HumanPlayer import HumanPlayer
 from VisualGame import VisualGame
 
-board_string = '6763525635134453444361412671365712'
+board_string = '65214673556155731566316327373221417'
 
 board = BitBoard.createBoardFromString(board_string)
 player1 = HumanPlayer()

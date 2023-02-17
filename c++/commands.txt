@@ -1,0 +1,2 @@
+g++ -c -fPIC negamax.cpp BitBoard.h BitBoard.cpp -o negamax.o
+g++ -shared -o libnegamax.so negamax.o

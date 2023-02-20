@@ -56,6 +56,7 @@ int recNegamax(Bitboard *board, int *positionCount, int alpha, int beta) {
     }
 
     for (int move : explorationOrder) {
+        //TODO: contains kann effizienter gemacht werden dank heights[]
         if (contains(&possibleMoves, move)) {
 
             board->insertPiece(move);

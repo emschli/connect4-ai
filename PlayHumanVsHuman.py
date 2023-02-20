@@ -1,6 +1,5 @@
 from players.HumanPlayer import HumanPlayer
 from VisualGame import VisualGame
-from Board import Board
 from BitBoard import BitBoard
 
 humanPlayer1 = HumanPlayer()

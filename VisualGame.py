@@ -6,6 +6,7 @@ SIZE_OF_FIELD = 50
 DIAMETER = SIZE_OF_FIELD - 30
 
 WHITE = (255, 255, 255)
+GREY = (211, 211, 211)
 BLACK = (0, 0, 0)
 RED = (213, 50, 80)
 YELLOW = (255, 255, 102)
@@ -128,7 +129,7 @@ class VisualGame:
 
     def _drawBoard(self):
         array_board = self.board.getArrayBoard()
-        self.display.fill(WHITE)
+        self.display.fill(GREY)
         for i in range(self.board.rows):
             for j in range(self.board.columns):
                 field = array_board[i][j]

@@ -37,20 +37,11 @@ bool Bitboard::isWin() {
     return false;
 }
 
-std::vector<int> Bitboard::getPossibleMoves() {
-    long top = 0b1000000100000010000001000000100000010000001000000L;
-    std::vector<int> result;
-
-    for (int i = 0; i <= 6; i++) {
-        long pretendedMove = 1L << this->heights[i];
-        if ((top & pretendedMove) == 0) {
-            result.push_back(i);
-        }
-    }
-
-    return result;
-}
-
 long Bitboard::getPositionCode() {
     return 2 * boards[0] + boards[1] + BOTTOM;
+}
+
+bool Bitboard::canPlay(int column) {
+    long pretendedMove = 1L << this->heights[column];
+    return (TOP_MASK & pretendedMove) == 0;
 }

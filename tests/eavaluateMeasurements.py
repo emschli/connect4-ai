@@ -5,9 +5,9 @@ fileNames = END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGI
 namesInTable = [
     "Ende leicht",
     "Mitte leicht",
-    "Mitte mittelschwer",
+    "Mitte mittel",
     "Anfang leicht",
-    "Anfang mittelschwer",
+    "Anfang mittel",
     "Anfang schwer"
 ]
 version = '_v6'

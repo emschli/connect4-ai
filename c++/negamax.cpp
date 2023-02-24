@@ -6,46 +6,38 @@
 #define COLUMNS 7
 
 const int explorationOrder[] = { 3, 2, 4, 5, 1, 0, 6 };
-//TODO: Pass in reference to struct vector from python
+
 TranspositionTable *transpositionTable = new TranspositionTable(8388593);
 
 int getScore(Bitboard *board) {
-    return (ROWS * COLUMNS - board->numberOfPiecesPlayed +2) / 2;
-}
-
-bool contains(std::vector<int> *list, int element) {
-    for (int i : *list) {
-        if (i == element) {
-            return true;
-        }
-    }
-    return false;
+    return (ROWS * COLUMNS - board->numberOfPiecesPlayed + 2) / 2;
 }
 
 int recNegamax(Bitboard *board, int *positionCount, int alpha, int beta) {
     ++*positionCount;
 
-    std::vector<int> possibleMoves = board->getPossibleMoves();
-
-    if (possibleMoves.empty()) {
+    if (board->numberOfPiecesPlayed == Bitboard::WIDTH * Bitboard::HEIGHT) {
         return 0;
     }
 
-    for (int move : possibleMoves) {
-        board->insertPiece(move);
-        if (board->isWin()) {
-            int score = getScore(board);
+    for (int i = 0; i < Bitboard::WIDTH; i++) {
+        if (board->canPlay(i)) {
+            board->insertPiece(i);
+            if (board->isWin()) {
+                int score = getScore(board);
+                board->undoMove();
+                return score;
+            }
             board->undoMove();
-            return score;
         }
-        board->undoMove();
+
     }
 
     int maxScore = (COLUMNS * ROWS - 1 - board->numberOfPiecesPlayed) / 2;
 
     int valueFromTable = transpositionTable->get(board->getPositionCode());
     if (valueFromTable != 0) {
-        maxScore = valueFromTable +  Bitboard::MIN_SCORE - 1; //TODO: Why??
+        maxScore = valueFromTable + Bitboard::MIN_SCORE - 1;
     }
 
     if (beta > maxScore) {
@@ -56,8 +48,7 @@ int recNegamax(Bitboard *board, int *positionCount, int alpha, int beta) {
     }
 
     for (int move : explorationOrder) {
-        //TODO: contains kann effizienter gemacht werden dank heights[]
-        if (contains(&possibleMoves, move)) {
+        if (board->canPlay(move)) {
 
             board->insertPiece(move);
             int score = -recNegamax(board, positionCount, -beta, -alpha);
@@ -82,21 +73,43 @@ int negamax(long *bitboards, int *heights, int *moves, int numberOfPiecesPlayed,
     return recNegamax(board, positionCount, INT32_MIN+1, INT32_MAX);
 }
 
+#include <sys/time.h>
+unsigned long long getTimeMicrosec() {
+    timeval NOW;
+    gettimeofday(&NOW, NULL);
+    return NOW.tv_sec*1000000LL + NOW.tv_usec;
+}
+
 int main() {
-    long boards[] = {736375146669L, 13539960870674L};
-    int heights[] = {6, 13, 20, 27, 34, 40, 44};
-    int moves[42] = {1, 1, 4, 1, 4, 6, 5, 1, 4, 2, 3, 5, 1, 1, 3, 3, 0, 0, 0, 4, 5, 2, 2, 5, 4, 2, 3, 2, 5, 6, 0, 2, 4, 0, 3, 3, 0, -1, -1, -1, -1, -1};
-    int numberOfPiecesPlayed = 37;
-    int positionCount = 0;
+//    long boards[] = {736375146669L, 13539960870674L};
+//    int heights[] = {6, 13, 20, 27, 34, 40, 44};
+//    int moves[42] = {1, 1, 4, 1, 4, 6, 5, 1, 4, 2, 3, 5, 1, 1, 3, 3, 0, 0, 0, 4, 5, 2, 2, 5, 4, 2, 3, 2, 5, 6, 0, 2, 4, 0, 3, 3, 0, -1, -1, -1, -1, -1};
+//    int numberOfPiecesPlayed = 37;
+//    int positionCount = 0;
 //    long boards[] = {85111763436932L, 53409260683835L};
 //    int heights[] = {6, 11, 20, 23, 34, 41, 47};
 //    int moves[42] = {5, 4, 1, 0, 3, 5, 6, 2, 4, 4, 5, 0, 4, 4, 6, 2, 0, 4, 5, 5, 2, 0, 5, 2, 1, 6, 2, 6, 2, 1, 1, 0, 3, 0, 6, -1, -1, -1, -1, -1, -1, -1};
 //    int numberOfPiecesPlayed = 35;
 //    int positionCount = 0;
 
+//    long boards[] = {0L, 0L};
+//    int heights[] = {0, 7, 14, 21, 28, 35, 42};
+//    int moves[42] = {};
+//    int numberOfPiecesPlayed = 0;
+//    int positionCount = 0;
+
+    long boards[] = {13196287033605L, 17594065125506L};
+    int heights[] = {3, 9, 16, 21, 32, 35, 45};
+    int moves[42] = {2, 1, 6, 4, 0, 4, 6, 0, 1, 2, 0, 4, 4, 6, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+    int numberOfPiecesPlayed = 14;
+    int positionCount = 0;
+
+    unsigned long long start_time = getTimeMicrosec();
     int result = negamax(boards, heights, moves, numberOfPiecesPlayed, &positionCount);
+    unsigned long long end_time = getTimeMicrosec();
 
     std::cout << result << std::endl;
+    std::cout << (end_time - start_time) / 1000 << std::endl;
 
     return 0;
 }

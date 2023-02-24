@@ -20,7 +20,7 @@ class NegamaxWithCSolver:
         c_boards = (c_long * 2)(*board.boards)
         c_heights = (c_int * board.columns)(*board.height)
         c_moves = (c_int * 42)(*board.moves)
-        score = self.lib.c_negamax(byref(c_boards), byref(c_heights), byref(c_moves), board.numberOfPiecesPlayed, byref(self.positionCount))
+        score = self.lib.c_negamax(byref(c_boards), byref(c_heights), byref(c_moves), board.numberOfPiecesPlayed, byref(c_positionCount))
         self.positionCount = c_positionCount.value
         return score
 

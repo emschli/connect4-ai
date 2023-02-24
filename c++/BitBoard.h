@@ -1,7 +1,6 @@
 class Bitboard {
 public:
     static const int MIN_SCORE = -(7*6) / 2 +3;
-    static const int MAX_SCORE = (7*6) / 2 -3;
     static const int WIDTH = 7;
     static const int HEIGHT = 6;
 

@@ -1,7 +1,7 @@
 from math import inf as infinity
 from BitBoard import BitBoard
 from ctypes import c_int, c_long, cdll, byref
-from rootConfig import root_path
+from config import root_path
 
 
 class NegamaxWithCSolver:

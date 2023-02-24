@@ -1,4 +1,3 @@
-from Board import Board
 from BitBoard import BitBoard
 from players.HumanPlayer import HumanPlayer
 from VisualGame import VisualGame

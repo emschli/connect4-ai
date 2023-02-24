@@ -1,6 +1,7 @@
 import pygame
-import threading
+import multiprocessing
 from Board import ONGOING
+import time
 
 SIZE_OF_FIELD = 50
 DIAMETER = SIZE_OF_FIELD - 30
@@ -27,7 +28,7 @@ class VisualGame:
         self.secondPlayer = secondPlayer
         self.board = board
         self.font_style = pygame.font.SysFont("bahnschrift", 25)
-        self.kiThread = None
+        self.kiProcess = None
         self.columnBorders = self._initColumnBorders(board.columns)
 
     def _initColumnBorders(self, columns):
@@ -36,13 +37,13 @@ class VisualGame:
             borders.append(i*SIZE_OF_FIELD)
         return borders
 
-    def play(self):
+    def play(self, delay=0):
         gameFinished = False
         currentPlayer = self.startingPlayer
         self._drawBoard()
         pygame.display.flip()
+        time.sleep(delay)
 
-        status = None
         try:
             while not gameFinished:
                 if currentPlayer.type == 'human':
@@ -68,8 +69,8 @@ class VisualGame:
             except pygame.error:
                 print('Quit!')
             finally:
-                if self.kiThread is not None and self.kiThread.is_alive():
-                    self.kiThread.terminate()
+                if self.kiProcess is not None and self.kiProcess.is_alive():
+                    self.kiProcess.kill()
                 exit()
 
     def _makeHumanMove(self):
@@ -102,16 +103,17 @@ class VisualGame:
             if mouse_x >= self.columnBorders[columnIndex]:
                 return columnIndex
 
-    def _makeKiMove(self, currentPlayer):
-        finish_event = threading.Event()
-        self.kiThread = threading.Thread(target=currentPlayer.getMove, args=(self.board, finish_event))
-        self.kiThread.start()
+    def _makeKiMove(self, kiPlayer):
+        finish_event = multiprocessing.Event()
+        r_value = multiprocessing.Value('i')
+        self.kiProcess = multiprocessing.Process(target=kiPlayer.getMove, args=(self.board, finish_event, r_value))
+        self.kiProcess.start()
 
         while not finish_event.is_set():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     raise Quit
-        return currentPlayer.chosenColumn
+        return r_value.value
 
     def _printGameFinishedMessage(self, status):
         if status == 'DRAW':

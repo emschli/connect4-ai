@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from importTestBoards import END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGIN_HARD
 import os
-from eavaluateMeasurements import fileNames
+from evaluateMeasurements import fileNames
 import statistics
 
 measurement = 'duration'

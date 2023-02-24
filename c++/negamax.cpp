@@ -73,19 +73,13 @@ int negamax(long *bitboards, int *heights, int *moves, int numberOfPiecesPlayed,
     return recNegamax(board, positionCount, INT32_MIN+1, INT32_MAX);
 }
 
-#include <sys/time.h>
-unsigned long long getTimeMicrosec() {
-    timeval NOW;
-    gettimeofday(&NOW, NULL);
-    return NOW.tv_sec*1000000LL + NOW.tv_usec;
-}
-
 int main() {
 //    long boards[] = {736375146669L, 13539960870674L};
 //    int heights[] = {6, 13, 20, 27, 34, 40, 44};
 //    int moves[42] = {1, 1, 4, 1, 4, 6, 5, 1, 4, 2, 3, 5, 1, 1, 3, 3, 0, 0, 0, 4, 5, 2, 2, 5, 4, 2, 3, 2, 5, 6, 0, 2, 4, 0, 3, 3, 0, -1, -1, -1, -1, -1};
 //    int numberOfPiecesPlayed = 37;
 //    int positionCount = 0;
+
 //    long boards[] = {85111763436932L, 53409260683835L};
 //    int heights[] = {6, 11, 20, 23, 34, 41, 47};
 //    int moves[42] = {5, 4, 1, 0, 3, 5, 6, 2, 4, 4, 5, 0, 4, 4, 6, 2, 0, 4, 5, 5, 2, 0, 5, 2, 1, 6, 2, 6, 2, 1, 1, 0, 3, 0, 6, -1, -1, -1, -1, -1, -1, -1};
@@ -104,12 +98,9 @@ int main() {
     int numberOfPiecesPlayed = 14;
     int positionCount = 0;
 
-    unsigned long long start_time = getTimeMicrosec();
     int result = negamax(boards, heights, moves, numberOfPiecesPlayed, &positionCount);
-    unsigned long long end_time = getTimeMicrosec();
 
     std::cout << result << std::endl;
-    std::cout << (end_time - start_time) / 1000 << std::endl;
 
     return 0;
 }

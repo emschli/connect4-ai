@@ -6,3 +6,6 @@ venv
 /c++/Makefile
 /c++/untitled1
 /c++/CMakeFiles/
+/c++/BitBoard.o
+/c++/TranspositionTable.o
+/c++/negamax.o

@@ -1,6 +1,6 @@
 from math import inf as infinity
 from BitBoard import BitBoard
-from ctypes import c_int, c_longlong, cdll, byref
+from ctypes import c_int, c_longlong, byref, CDLL
 from rootPath import root_path
 import os
 
@@ -13,7 +13,7 @@ class NegamaxWithCSolver:
         self.positionCount = 0
         self.explorationOrder = [3, 2, 4, 5, 1, 0, 6]
         pathToLib = os.path.join(root_path , 'c++', 'libnegamax.so')
-        self.lib = cdll.LoadLibrary(pathToLib)
+        self.lib = CDLL(pathToLib, winmode=0)
         self.lib.c_negamax.restype = c_int
 
     def solve(self, board):

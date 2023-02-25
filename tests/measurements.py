@@ -6,15 +6,16 @@ fileNames = END_EASY, MIDDLE_EASY, MIDDLE_MEDIUM, BEGIN_EASY, BEGIN_MEDIUM, BEGI
 version = solver.version
 seconds_to_sleep = 60 * 5
 
-for i in range(6):
-    fileName = fileNames[i]
-    print('Starting Measurements for: ' + fileName)
+if __name__ == '__main__':
+    for i in range(6):
+        fileName = fileNames[i]
+        print('Starting Measurements for: ' + fileName)
 
-    test_boards = readFile(fileName)
-    process = MeasurementProcess(test_boards, fileName+version)
+        test_boards = readFile(fileName)
+        process = MeasurementProcess(test_boards, fileName+version)
 
-    process.start()
-    process.join(seconds_to_sleep)
+        process.start()
+        process.join(seconds_to_sleep)
 
-    if process.is_alive():
-        process.kill()
+        if process.is_alive():
+            process.kill()

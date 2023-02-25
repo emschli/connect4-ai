@@ -2,6 +2,7 @@ from math import inf as infinity
 from BitBoard import BitBoard
 from ctypes import c_int, c_long, cdll, byref
 from config import root_path
+import os
 
 
 class NegamaxWithCTranspositionTable:
@@ -11,7 +12,7 @@ class NegamaxWithCTranspositionTable:
     def __init__(self):
         self.positionCount = 0
         self.explorationOrder = [3, 2, 4, 5, 1, 0, 6]
-        pathToLib = root_path + '/c++/libnegamax_ts.so'
+        pathToLib = os.path.join(root_path, 'c++', 'libnegamax_ts.so')
         self.lib = cdll.LoadLibrary(pathToLib)
         self.lib.c_negamax.restype = c_int
 

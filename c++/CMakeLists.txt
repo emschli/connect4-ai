@@ -10,7 +10,5 @@ set(PROJECT_SOURCES
         BitBoard.cpp
         TranspositionTable.cpp)
 
-add_executable(untitled1 ${PROJECT_SOURCES} ${PROJECT_HEADERS})
-
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY .)
 add_library(negamax_ts SHARED negamax.cpp BitBoard.h BitBoard.cpp TranspositionTable.cpp TranspositionTable.h)

@@ -6,7 +6,7 @@
 # First steps
 
 1. run `pip install -r requirements.txt` from project root project folder
-2. run `cmake .` and `cmake -- build .` from `./c++` folder
+2. run `cmake .` and `cmake --build .` from `./c++` folder
 
 
 # Spielen gegen die Vier gewinnt Ki

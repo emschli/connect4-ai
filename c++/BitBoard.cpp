@@ -12,14 +12,14 @@ Bitboard::Bitboard(long long *boards, int *heights, int *moves, int numberOfPiec
 }
 
 void Bitboard::insertPiece(int columnIndex) {
-    long long move = 1L << this->heights[columnIndex]++;
+    long long move = 1LL << this->heights[columnIndex]++;
     this->boards[this->numberOfPiecesPlayed & 1] ^= move;
     this->moves[numberOfPiecesPlayed++] = columnIndex;
 }
 
 void Bitboard::undoMove() {
     int columnIndex = this->moves[--this->numberOfPiecesPlayed];
-    long long move = 1L << --this->heights[columnIndex];
+    long long move = 1LL << --this->heights[columnIndex];
     this->boards[this->numberOfPiecesPlayed & 1] ^= move;
 }
 
@@ -38,6 +38,6 @@ long long Bitboard::getPositionCode() {
 }
 
 bool Bitboard::canPlay(int column) {
-    long long pretendedMove = 1L << this->heights[column];
+    long long pretendedMove = 1LL << this->heights[column];
     return (TOP_MASK & pretendedMove) == 0;
 }

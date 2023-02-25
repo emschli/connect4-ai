@@ -22,5 +22,5 @@ private:
     long long *boards;
     int *heights;
     int *moves;
-    static const long long TOP_MASK = 0b1000000100000010000001000000100000010000001000000L;
+    static const long long TOP_MASK = 0b1000000100000010000001000000100000010000001000000LL;
 };

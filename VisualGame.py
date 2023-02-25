@@ -1,5 +1,5 @@
 import pygame
-import multiprocessing
+import threading
 from Board import ONGOING
 import time
 
@@ -28,7 +28,7 @@ class VisualGame:
         self.secondPlayer = secondPlayer
         self.board = board
         self.font_style = pygame.font.SysFont("bahnschrift", 25)
-        self.kiProcess = None
+        self.kiThread = None
         self.columnBorders = self._initColumnBorders(board.columns)
 
     def _initColumnBorders(self, columns):
@@ -69,8 +69,6 @@ class VisualGame:
             except pygame.error:
                 print('Quit!')
             finally:
-                if self.kiProcess is not None and self.kiProcess.is_alive():
-                    self.kiProcess.kill()
                 exit()
 
     def _makeHumanMove(self):
@@ -104,16 +102,17 @@ class VisualGame:
                 return columnIndex
 
     def _makeKiMove(self, kiPlayer):
-        finish_event = multiprocessing.Event()
-        r_value = multiprocessing.Value('i')
-        self.kiProcess = multiprocessing.Process(target=kiPlayer.getMove, args=(self.board, finish_event, r_value))
-        self.kiProcess.start()
+        finish_event = threading.Event()
+
+        self.kiThread = threading.Thread(target=kiPlayer.getMove, args=(self.board, finish_event))
+        self.kiThread.daemon = True
+        self.kiThread.start()
 
         while not finish_event.is_set():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     raise Quit
-        return r_value.value
+        return kiPlayer.chosenColumn
 
     def _printGameFinishedMessage(self, status):
         if status == 'DRAW':

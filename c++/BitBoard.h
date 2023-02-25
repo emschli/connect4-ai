@@ -6,7 +6,7 @@ public:
 
     int numberOfPiecesPlayed;
 
-    Bitboard(long *boards, int *heights, int *moves, int numberOfPiecesPlayed);
+    Bitboard(long long *boards, int *heights, int *moves, int numberOfPiecesPlayed);
 
     void insertPiece(int columnIndex);
 
@@ -16,11 +16,11 @@ public:
 
     bool canPlay(int column);
 
-    long getPositionCode();
+    long long getPositionCode();
 
 private:
-    long *boards;
+    long long *boards;
     int *heights;
     int *moves;
-    static const long TOP_MASK = 0b1000000100000010000001000000100000010000001000000L;
+    static const long long TOP_MASK = 0b1000000100000010000001000000100000010000001000000L;
 };

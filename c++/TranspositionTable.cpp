@@ -7,13 +7,13 @@ void TranspositionTable::reset() {
     memset(&table[0], 0, table.size() * sizeof(Entry));
 }
 
-void TranspositionTable::put(long key, unsigned char value) {
+void TranspositionTable::put(long long key, unsigned char value) {
     unsigned int i = index(key);
     table[i].key = key;
     table[i].value = value;
 }
 
-unsigned char TranspositionTable::get(long key) {
+unsigned char TranspositionTable::get(long long key) {
     unsigned int i = index(key);
 
     if (table[i].key == key) {
@@ -24,6 +24,6 @@ unsigned char TranspositionTable::get(long key) {
 
 }
 
-unsigned int TranspositionTable::index(long key) {
+unsigned int TranspositionTable::index(long long key) {
     return key % table.size();
 }

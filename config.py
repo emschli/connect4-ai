@@ -1,8 +1,3 @@
-import os
-
-root_path = os.path.dirname(os.path.abspath("config.py"))
-
-
 from solvers.minimax import Minimax
 from solvers.negamax import Negamax
 from solvers.negamax_alpha_beta import NegamaxAlphaBeta

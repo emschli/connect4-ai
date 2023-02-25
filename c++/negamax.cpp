@@ -66,12 +66,12 @@ int recNegamax(Bitboard *board, int *positionCount, int alpha, int beta) {
     return alpha;
 }
 
-int negamax(long *bitboards, int *heights, int *moves, int numberOfPiecesPlayed, int *positionCount) {
+int negamax(long long *bitboards, int *heights, int *moves, int numberOfPiecesPlayed, int *positionCount) {
     Bitboard *board = new Bitboard(bitboards, heights, moves, numberOfPiecesPlayed);
     transpositionTable->reset();
     return recNegamax(board, positionCount, (-2147483647 - 1)+1, (2147483647));
 }
 
 extern "C" {
-    int c_negamax(long *bitboards, int *heights, int *moves, int numberOfPiecesPlayed, int *positionCount) { return negamax(bitboards, heights, moves, numberOfPiecesPlayed, positionCount); }
+    int c_negamax(long long *bitboards, int *heights, int *moves, int numberOfPiecesPlayed, int *positionCount) { return negamax(bitboards, heights, moves, numberOfPiecesPlayed, positionCount); }
 }

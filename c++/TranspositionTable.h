@@ -3,7 +3,7 @@
 class TranspositionTable {
 private:
     struct Entry {
-        long key;
+        long long key;
         unsigned char value;
     };
 
@@ -12,7 +12,7 @@ private:
 public:
     TranspositionTable(unsigned int size);
     void reset();
-    void put(long key, unsigned char value);
-    unsigned char get(long key);
-    unsigned int index(long key);
+    void put(long long key, unsigned char value);
+    unsigned char get(long long key);
+    unsigned int index(long long key);
 };

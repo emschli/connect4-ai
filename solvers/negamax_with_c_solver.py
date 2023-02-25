@@ -1,7 +1,7 @@
 from math import inf as infinity
 from BitBoard import BitBoard
-from ctypes import c_int, c_long, cdll, byref
-from config import root_path
+from ctypes import c_int, c_longlong, cdll, byref
+from rootPath import root_path
 import os
 
 
@@ -18,7 +18,7 @@ class NegamaxWithCSolver:
 
     def solve(self, board):
         c_positionCount= c_int()
-        c_boards = (c_long * 2)(*board.boards)
+        c_boards = (c_longlong * 2)(*board.boards)
         c_heights = (c_int * board.columns)(*board.height)
         c_moves = (c_int * 42)(*board.moves)
         score = self.lib.c_negamax(byref(c_boards), byref(c_heights), byref(c_moves), board.numberOfPiecesPlayed, byref(c_positionCount))

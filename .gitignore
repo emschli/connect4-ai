@@ -1,3 +1,8 @@
 venv
 .idea
 /c++/cmake-build-debug/
+/c++/cmake_install.cmake
+/c++/CMakeCache.txt
+/c++/Makefile
+/c++/untitled1
+/c++/CMakeFiles/

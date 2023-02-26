@@ -60,6 +60,10 @@ class NegamaxWithBitboard:
         for i in board.getPossibleMoves():
             board.insertPiece(i)
 
+            if board.isWin():
+                board.undoMove()
+                return i
+
             score = -self.solve(board)
 
             board.undoMove()

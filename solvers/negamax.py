@@ -46,6 +46,9 @@ class Negamax:
 
         for i in range(board.columns):
             if not board.columnIsFull(i):
+                if board.wouldBeWin(i):
+                    return i
+
                 column_index, row_index = board.insertPiece(i)
 
                 score = -self.solve(board)
